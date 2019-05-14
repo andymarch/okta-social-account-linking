@@ -16,7 +16,7 @@ Vue.use(Auth, {
   issuer: process.env.VUE_APP_ISSUER,
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: process.env.VUE_APP_REDIRECT,
-  scope: process.env.VUE_APP_SCOPE.split(' ')
+  scope: 'openid profile'
 })
 
 const router = new VueRouter(
