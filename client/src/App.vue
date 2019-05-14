@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-        <button v-if='authenticated' v-on:click='logout' id='logout-button'>Logout</button>
-    <h1>Okta Social Demo</h1>
+    <div id="DemoHeader">
+      <img id="DemoLogo" :src="require('@/assets/dev_logo.png')" alt="Okta">
+      <h1 id="DemoName">Social Account Linking</h1>
+    </div>
     <router-view></router-view>
+    <div class="section">
+        <button v-if='authenticated' v-on:click='logout' id='logout-button'>Logout</button>
+    </div>
   </div>
 </template>
 
@@ -37,12 +42,4 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="content">
+        <link rel="stylesheet" href="./okta-theme.css">
         <div id="widget-container"></div>
     </div>
 </template>
@@ -16,12 +17,15 @@ import OktaSignIn from '@okta/okta-signin-widget'
             clientId: process.env.VUE_APP_CLIENT_ID,
             redirectUri: process.env.VUE_APP_REDIRECT,
             i18n: {
-            en: {
-                'primaryauth.title': 'Customer Sign in'
-            }
+                en: {
+                    'primaryauth.title': 'Sign in'
+                }
+            },
+            colors: {
+                brand: '#e22866'
             },
             features: {
-                //registration: true,                 // Enable self-service registration flow
+                registration: true,                 // Enable self-service registration flow
                 rememberMe: true,                   // Setting to false will remove the checkbox to save username
                 multiOptionalFactorEnroll: true,  // Allow users to enroll in multiple optional factors before finishing the authentication flow.
             },

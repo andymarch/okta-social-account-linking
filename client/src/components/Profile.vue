@@ -1,10 +1,10 @@
 <template>
-<div>
-    <div>
+<div class="content">
+    <div class="section">
         Hi {{user.displayname}}, your account id is {{user.sub}}
     </div>
 
-    <div>
+    <div class="section">
         <h3>Social Accounts</h3>
         <div>Facebook</div>
         <div v-if="user.facebook_email !== ''">
