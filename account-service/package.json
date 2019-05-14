@@ -4,7 +4,7 @@
   "description": "REST service to manage account linking in Okta",
   "main": "index.js",
   "scripts": {
-    "run": "node .",
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
