@@ -45,12 +45,9 @@
                 this.user.displayname = user.name
                 this.user.email = user.preferred_username
                 var tokenValue = await this.$auth.getAccessToken();
-
+                axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                const response = await axios.get(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub,
-                    { headers:{
-                    "Authorization": 'Bearer '+tokenValue}
-                    })
+                    const response = await axios.get(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub)
                     if(response.data.profile.social_facebook_email){
                         this.user.facebook_email = response.data.profile.social_facebook_email
                     }
@@ -69,7 +66,12 @@
                     {
                         facebook_email: this.link_facebook
                     })
-                    this.$router.go()
+                    
+                    await this.$auth.logout()
+                    var config = {
+                        idp: process.env.VUE_APP_MATCHING_IDP_ID
+                    };
+                    this.$auth.loginRedirect('/',config)
                 }
                 catch(error) {
                     console.log(error);
@@ -82,7 +84,7 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
-                    this.$router.go()
+                    this.$router.go('/')
                 }
                 catch(error) {
                     console.log(error);

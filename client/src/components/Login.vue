@@ -26,7 +26,7 @@ import OktaSignIn from '@okta/okta-signin-widget'
                 multiOptionalFactorEnroll: true,  // Allow users to enroll in multiple optional factors before finishing the authentication flow.
             },
             idps: [
-                {type: 'FACEBOOK', id: '0oaktjgztzzgaMzlZ0h7'}
+                {type: 'FACEBOOK', id: process.env.VUE_APP_LOGIN_IDP_ID}
             ],
             authParams: {
             responseType: ['id_token', 'token'],
