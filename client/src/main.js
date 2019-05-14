@@ -13,10 +13,10 @@ Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 Vue.use(Auth, {
-  issuer: 'https://social.oktapreview.com/oauth2/default',
-  client_id: '0oaksvclf9axrV2vV0h7',
-  redirect_uri: 'http://localhost:8080/implicit/callback',
-  scope: 'openid profile email'
+  issuer: process.env.VUE_APP_ISSUER,
+  client_id: process.env.VUE_APP_CLIENT_ID,
+  redirect_uri: process.env.VUE_APP_REDIRECT,
+  scope: process.env.VUE_APP_SCOPE.split(' ')
 })
 
 const router = new VueRouter(
