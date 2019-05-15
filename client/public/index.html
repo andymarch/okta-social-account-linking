@@ -10,6 +10,17 @@
     <title>Okta Social Account Linking</title>
   </head>
   <body>
+      <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId            : '385592178954663',
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v3.3'
+            });
+          };
+        </script>
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
     <noscript>
       <strong>We're sorry but this demo doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

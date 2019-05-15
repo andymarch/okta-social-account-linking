@@ -19,6 +19,9 @@
                 <button type="submit">Save</button>
             </form>
         </div>
+        <div class="section" v-if="facebook.loggedon !== ''">
+            You are logged into facebook with {{facebook.email}}
+        </div>
     </div>
 </div>
 </template>
@@ -34,7 +37,13 @@
                     email: '',
                     facebook_email: ''
                 },
-                link_facebook: ''
+                link_facebook: '',
+                facebook:{
+                    loggedin:'',
+                    name: '',
+                    id: '',
+                    email: ''
+                }
                 
             }
         },
@@ -89,10 +98,24 @@
                 catch(error) {
                     console.log(error);
                 }
+            },
+            checkLoginState() {
+            var url = '/me?fields=name,email';
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+                this.facebook.loggedin = 'yes'
+                var url = '/me?fields=id,name,email';
+                FB.api(url, function(response) {
+                    this.facebook.name = response.name
+                    this.facebook.id = response.id
+                    this.facebook.email = response.email
+                }, {scope: 'email'});
+            });
             }
         },
         created: function(){
-            this.getUser();
+            this.getUser()
+            this.checkLoginState()
         }
     }
 </script>
