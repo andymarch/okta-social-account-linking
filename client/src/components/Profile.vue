@@ -6,7 +6,7 @@
 
     <div class="section">
         <h3>Facebook</h3>
-        <div v-if="user.facebook_email !== ''">
+        <div class="section" v-if="user.facebook_email !== ''">
             <div>You can login from Facebook with email {{user.facebook_email}}</div>
             <form @submit.prevent="unlinkFacebook">
                 <button type="submit">Unlink this account</button>
