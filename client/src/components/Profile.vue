@@ -104,6 +104,7 @@
                     console.log(error);
                 }
             },
+
             checkLoginState() {
             FB.init({
               appId            : '385592178954663',
@@ -112,11 +113,11 @@
               version          : 'v3.3'
             });
             var url = '/me?fields=name,email';
-            FB.getLoginStatus(function(response) {
+            FB.getLoginStatus(() => {
                 if (response.status === 'connected') {
                     this.facebook.loggedin = 'yes'
                     var url = '/me?fields=id,name,email';
-                    FB.api(url, function(response) {
+                    FB.api(url, (response) => {
                         this.facebook.name = response.name
                         this.facebook.id = response.id
                         this.facebook.email = response.email
