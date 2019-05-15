@@ -19,8 +19,9 @@
                 <button type="submit">Save</button>
             </form>
         </div>
-        <div class="section" v-if="facebook.loggedon !== ''">
-            You are logged into facebook with {{facebook.email}}
+        <div class="section" v-if="facebook.loggedin !== ''">
+            You are {{facebook.name}},logged into facebook with
+            {{facebook.email}} with id {{facebook.id}}
         </div>
     </div>
 </div>
@@ -100,6 +101,12 @@
                 }
             },
             checkLoginState() {
+            FB.init({
+              appId            : '385592178954663',
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v3.3'
+            });
             var url = '/me?fields=name,email';
             FB.getLoginStatus(function(response) {
                 statusChangeCallback(response);
