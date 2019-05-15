@@ -13,19 +13,31 @@
             </form>
         </div>
         <div v-else>
-            <form @submit.prevent="linkFacebook">
-                <label for="facebookemail">Facebook Email Address</label>
-                <input id="facebookemail" v-model="link_facebook"/>
-                <button type="submit">Save</button>
-            </form>
-        </div>
-        <div class="section" v-if="facebook.loggedin === 'yes'">
-            You are {{facebook.name}},logged into facebook with
-            {{facebook.email}} with id {{facebook.id}}
-        </div>
-        <div class="section" v-if="facebook.loggedin === 'no'">
-            You are {{facebook.name}},logged into facebook with
-            {{facebook.email}} with id {{facebook.id}}
+            <!-- User is logged in and has authorized the app -->
+            <div class="section" v-if="facebook.loggedin === 'yes' &&
+            facebook.authorized === 'yes'">
+                <div>You are {{facebook.name}} on facebook with {{facebook.email}}.</div>
+                <form @submit.prevent="linkFacebook">
+                    <input type="hidden" v-model="link_facebook"/>
+                    <button type="submit">Link this account</button>
+                </form>
+            </div>
+            <div class="section" >
+                <div v-if="facebook.loggedin === 'yes' &&
+                facebook.authorized === 'no'">
+                    You are logged into Facebook but you have not authorized the application.
+                </div>
+                <div class="section" v-if="facebook.loggedin === 'no'">
+                    You are not logged into facebook.
+                </div>
+                <div>Enter your facebook email address and we will redirect you
+                to authenticate and authorize this application.</div>
+                <form @submit.prevent="linkFacebookWithRedirect">
+                    <label for="facebookemail">Facebook Email Address</label>
+                    <input id="facebookemail" v-model="link_facebook"/>
+                    <button type="submit">Link this account</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -45,8 +57,8 @@
                 link_facebook: '',
                 facebook:{
                     loggedin:'',
+                    authorized: '',
                     name: '',
-                    id: '',
                     email: ''
                 }
                 
@@ -72,6 +84,21 @@
             },
 
             linkFacebook: async function(){
+                var user = await this.$auth.getUser();
+                var tokenValue = await this.$auth.getAccessToken();
+                axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
+                try {
+                    const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook',
+                    {
+                        facebook_email: this.link_facebook
+                    })
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            },
+
+            linkFacebookWithRedirect: async function(){
                 var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
@@ -115,19 +142,19 @@
             var url = '/me?fields=name,email';
             FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {
-                    console.log("user logged in")
                     this.facebook.loggedin = 'yes'
-                    var url = '/me?fields=id,name,email';
+                    this.facebook.authorized = 'yes'
+                    var url = '/me?fields=name,email';
                     FB.api(url, (response) => {
                         this.facebook.name = response.name
-                        this.facebook.id = response.id
                         this.facebook.email = response.email
+                        this.linkFacebook = response.email
                     }, {scope: 'email'});
                 }
                 else if (response.status === 'not_authorized') {
                     console.log("user logged in but not_authorized")
                     this.facebook.loggedin = 'yes'
-                    this.facebook.name = "not authorized"
+                    this.facebook.authorized = 'no'
                 } else {
                     console.log("not logged in")
                     this.facebook.loggedin = 'no'
