@@ -19,7 +19,11 @@
                 <button type="submit">Save</button>
             </form>
         </div>
-        <div class="section" v-if="facebook.loggedin !== ''">
+        <div class="section" v-if="facebook.loggedin === 'yes'">
+            You are {{facebook.name}},logged into facebook with
+            {{facebook.email}} with id {{facebook.id}}
+        </div>
+        <div class="section" v-if="facebook.loggedin === 'no'">
             You are {{facebook.name}},logged into facebook with
             {{facebook.email}} with id {{facebook.id}}
         </div>
@@ -109,14 +113,21 @@
             });
             var url = '/me?fields=name,email';
             FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-                this.facebook.loggedin = 'yes'
-                var url = '/me?fields=id,name,email';
-                FB.api(url, function(response) {
-                    this.facebook.name = response.name
-                    this.facebook.id = response.id
-                    this.facebook.email = response.email
-                }, {scope: 'email'});
+                if (response.status === 'connected') {
+                    this.facebook.loggedin = 'yes'
+                    var url = '/me?fields=id,name,email';
+                    FB.api(url, function(response) {
+                        this.facebook.name = response.name
+                        this.facebook.id = response.id
+                        this.facebook.email = response.email
+                    }, {scope: 'email'});
+                }
+                else if (response.status === 'not_authorized') {
+                    this.facebook.loggedin = 'yes'
+                    this.facebook.name = "not authorized"
+                } else {
+                    this.facebook.loggedin = 'no'
+                }
             });
             }
         },
