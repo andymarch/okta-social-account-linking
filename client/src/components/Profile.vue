@@ -5,8 +5,7 @@
     </div>
 
     <div class="section">
-        <h3>Social Accounts</h3>
-        <div>Facebook</div>
+        <h3>Facebook</h3>
         <div v-if="user.facebook_email !== ''">
             <form @submit.prevent="unlinkFacebook">
                 <button type="submit">Unlink</button>
@@ -17,12 +16,12 @@
             <div class="section" v-if="facebook.loggedin === 'yes' &&
             facebook.authorized === 'yes'">
                 <div>You are {{facebook.name}} on facebook with {{facebook.email}}.</div>
-                <form @submit.prevent="linkFacebook">
+                <form @submit.prevent="linkFacebookVerified">
                     <input type="hidden" v-model="link_facebook"/>
                     <button type="submit">Link this account</button>
                 </form>
             </div>
-            <div class="section" >
+            <div v-else class="section" >
                 <div v-if="facebook.loggedin === 'yes' &&
                 facebook.authorized === 'no'">
                     You are logged into Facebook but you have not authorized the application.
@@ -83,7 +82,7 @@
                 }
             },
 
-            linkFacebook: async function(){
+            linkFacebookVerified: async function(){
                 var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
@@ -92,6 +91,7 @@
                     {
                         facebook_email: this.link_facebook
                     })
+                    this.$router.go('/')
                 }
                 catch(error) {
                     console.log(error);
