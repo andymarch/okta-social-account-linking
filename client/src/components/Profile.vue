@@ -17,7 +17,6 @@
             facebook.authorized === 'yes'">
                 <div>You are {{facebook.name}} on facebook with {{facebook.email}}.</div>
                 <form @submit.prevent="linkFacebookVerified">
-                    <input type="hidden" v-model="link_facebook"/>
                     <button type="submit">Link this account</button>
                 </form>
             </div>
@@ -89,7 +88,7 @@
                 try {
                     const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook',
                     {
-                        facebook_email: this.link_facebook
+                        facebook_email: this.facebook.email
                     })
                     this.$router.go('/')
                 }
@@ -148,7 +147,6 @@
                     FB.api(url, (response) => {
                         this.facebook.name = response.name
                         this.facebook.email = response.email
-                        this.linkFacebook = response.email
                     }, {scope: 'email'});
                 }
                 else if (response.status === 'not_authorized') {
