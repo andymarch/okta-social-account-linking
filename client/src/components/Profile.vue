@@ -113,8 +113,9 @@
               version          : 'v3.3'
             });
             var url = '/me?fields=name,email';
-            FB.getLoginStatus(() => {
+            FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {
+                    console.log("user logged in")
                     this.facebook.loggedin = 'yes'
                     var url = '/me?fields=id,name,email';
                     FB.api(url, (response) => {
@@ -124,9 +125,11 @@
                     }, {scope: 'email'});
                 }
                 else if (response.status === 'not_authorized') {
+                    console.log("user logged in but not_authorized")
                     this.facebook.loggedin = 'yes'
                     this.facebook.name = "not authorized"
                 } else {
+                    console.log("not logged in")
                     this.facebook.loggedin = 'no'
                 }
             });
