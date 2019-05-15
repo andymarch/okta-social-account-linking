@@ -35,7 +35,7 @@ export default {
         await this.isAuthenticated()
 
         // Navigate back to home
-        this.$router.go({ path: '/' })
+        this.$router.replace({path: '/'})
       }
     }
   }
@@ -126,13 +126,13 @@ label {
 button {
     margin-left: 10px;
     margin-right: 10px;
+    margin-top:10px;
     background-color: #e22866;
     color: white;
     border-radius: 3px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
-    line-height: 45px;
     height: 45px;
     border: 2px solid transparent;
     cursor: pointer;

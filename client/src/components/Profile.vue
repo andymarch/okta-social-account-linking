@@ -1,14 +1,15 @@
 <template>
 <div class="content">
     <div class="section">
-        Hi {{user.displayname}}, your account id is {{user.sub}}
+        Hi {{user.displayname}}, your Okta account id is {{user.sub}}.
     </div>
 
     <div class="section">
         <h3>Facebook</h3>
         <div v-if="user.facebook_email !== ''">
+            <div>You can login from Facebook with email {{user.facebook_email}}</div>
             <form @submit.prevent="unlinkFacebook">
-                <button type="submit">Unlink</button>
+                <button type="submit">Unlink this account</button>
             </form>
         </div>
         <div v-else>
@@ -133,7 +134,7 @@
 
             checkLoginState() {
             FB.init({
-              appId            : '385592178954663',
+              appId            : process.env.VUE_APP_FACEBOOK_APP_ID,
               autoLogAppEvents : true,
               xfbml            : true,
               version          : 'v3.3'
@@ -150,11 +151,9 @@
                     }, {scope: 'email'});
                 }
                 else if (response.status === 'not_authorized') {
-                    console.log("user logged in but not_authorized")
                     this.facebook.loggedin = 'yes'
                     this.facebook.authorized = 'no'
                 } else {
-                    console.log("not logged in")
                     this.facebook.loggedin = 'no'
                 }
             });
