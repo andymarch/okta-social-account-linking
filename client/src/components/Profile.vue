@@ -22,11 +22,14 @@
                 </form>
             </div>
             <div v-else class="section" >
-                <div v-if="facebook.loggedin === 'yes' &&
+                <div v-if="facebook.sdk_loaded === false">
+                    Facebook SDK blocked, unable to determine user or status.
+                </div>
+                <div v-else-if="facebook.loggedin === 'yes' &&
                 facebook.authorized === 'no'">
                     You are logged into Facebook but you have not authorized the application.
                 </div>
-                <div class="section" v-if="facebook.loggedin === 'no'">
+                <div class="section" v-else-if="facebook.loggedin === 'no'">
                     You are not logged into facebook.
                 </div>
                 <div>Enter your facebook email address and we will redirect you
@@ -77,6 +80,7 @@
                 link_facebook: '',
                 likn_google: '',
                 facebook:{
+                    sdk_loaded: '',
                     loggedin:'',
                     authorized: '',
                     name: '',
@@ -164,6 +168,7 @@
               xfbml            : true,
               version          : 'v3.3'
             });
+            this.facebook.sdk_loaded = true
             var url = '/me?fields=name,email';
             FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {
@@ -220,7 +225,11 @@
         },
         created: function(){
             this.getUser()
-            this.checkLoginState()
+            try {
+                this.checkLoginState()
+            } catch (error){
+                this.facebook.sdk_loaded = false
+            }
         }
     }
 </script>
