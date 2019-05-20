@@ -78,7 +78,7 @@
                     google_email: ''
                 },
                 link_facebook: '',
-                likn_google: '',
+                link_google: '',
                 facebook:{
                     sdk_loaded: '',
                     loggedin:'',
@@ -120,7 +120,7 @@
                     {
                         facebook_email: this.facebook.email
                     })
-                    this.$router.replace('/')
+                    this.$router.push('/')
                 }
                 catch(error) {
                     console.log(error);
@@ -154,7 +154,7 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
-                    this.$router.replace('/')
+                    this.$router.push('/')
                 }
                 catch(error) {
                     console.log(error);
