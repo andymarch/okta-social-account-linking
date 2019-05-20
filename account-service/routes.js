@@ -11,6 +11,6 @@ app.route('/account/:accountid/facebook')
     .delete(account.unlink_facebook)
 
 app.route('/account/:accountid/google')
-    .post(account.link_facebook)
-    .delete(account.unlink_facebook)
+    .post(account.link_google)
+    .delete(account.unlink_google)
 };

@@ -47,6 +47,7 @@ exports.unlink_facebook = function(req,res){
     console.log(error)
     res.sendStatus(500)
 })
+}
 
 exports.link_google = function(req,res){
     console.log("link account called for "+req.params.accountid+" to "+req.body.google_email)
@@ -65,7 +66,7 @@ exports.link_google = function(req,res){
     })
 }
 
-exports.unlink_goolge = function(req,res){
+exports.unlink_google = function(req,res){
     console.log("unlink account called for "+req.params.accountid)
     client.getUser(req.params.accountid)
     .then(user => {
@@ -76,6 +77,5 @@ exports.unlink_goolge = function(req,res){
     .catch(error => {
     console.log(error)
     res.sendStatus(500)
-})
-}
+    })
 }
