@@ -29,7 +29,8 @@
                 multiOptionalFactorEnroll: true,  // Allow users to enroll in multiple optional factors before finishing the authentication flow.
             },
             idps: [
-                {type: 'FACEBOOK', id: process.env.VUE_APP_LOGIN_IDP_ID}
+                {type: 'FACEBOOK', id: process.env.VUE_APP_FACEBOOK_LOGIN_IDP_ID},
+                {type: 'GOOGLE', id: process.env.VUE_APP_GOOGLE_LOGIN_IDP_ID}
             ],
             authParams: {
             responseType: ['id_token', 'token'],

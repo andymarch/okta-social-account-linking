@@ -39,6 +39,26 @@
             </div>
         </div>
     </div>
+    <div class="section">
+        <h3>Google</h3>
+        <div class="section" v-if="user.google_email !== ''">
+            <div>You can login from Google with email {{user.google_email}}</div>
+            <form @submit.prevent="unlinkGoogle">
+                <button type="submit">Unlink this account</button>
+            </form>
+        </div>
+        <div v-else>
+            <div class="section" >
+                <div>Enter your google account email address and we will redirect you
+                to authenticate and authorize this application.</div>
+                <form @submit.prevent="linkGoogleWithRedirect">
+                    <label for="googleemail">Google Email Address</label>
+                    <input id="googleemail" v-model="link_google"/>
+                    <button type="submit">Link this account</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 <script>
@@ -51,9 +71,11 @@
                     sub: '',
                     displayname: '',
                     email: '',
-                    facebook_email: ''
+                    facebook_email: '',
+                    google_email: ''
                 },
                 link_facebook: '',
+                likn_google: '',
                 facebook:{
                     loggedin:'',
                     authorized: '',
@@ -76,6 +98,9 @@
                     if(response.data.profile.social_facebook_email){
                         this.user.facebook_email = response.data.profile.social_facebook_email
                     }
+                    if(response.data.profile.social_google_email){
+                        this.user.google_email = response.data.profile.social_google_email
+                    }
                 }
                 catch(error) {
                     console.log(error);
@@ -91,7 +116,7 @@
                     {
                         facebook_email: this.facebook.email
                     })
-                    this.$router.go('/')
+                    this.$router.replace('/')
                 }
                 catch(error) {
                     console.log(error);
@@ -110,7 +135,7 @@
                     
                     await this.$auth.logout()
                     var config = {
-                        idp: process.env.VUE_APP_MATCHING_IDP_ID
+                        idp: process.env.VUE_APP_FACEBOOK_MATCHING_IDP_ID
                     };
                     this.$auth.loginRedirect('/',config)
                 }
@@ -125,7 +150,7 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
-                    this.$router.go('/')
+                    this.$router.replace('/')
                 }
                 catch(error) {
                     console.log(error);
@@ -157,7 +182,41 @@
                     this.facebook.loggedin = 'no'
                 }
             });
-            }
+            },
+
+            linkGoogleWithRedirect: async function(){
+                var user = await this.$auth.getUser();
+                var tokenValue = await this.$auth.getAccessToken();
+                axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
+                try {
+                    const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/google',
+                    {
+                        google_email: this.link_google
+                    })
+                    
+                    await this.$auth.logout()
+                    var config = {
+                        idp: process.env.VUE_APP_GOOGLE_MATCHING_IDP_ID
+                    };
+                    this.$auth.loginRedirect('/',config)
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            },
+
+            unlinkGoogle: async function(){
+                var user = await this.$auth.getUser();
+                var tokenValue = await this.$auth.getAccessToken();
+                axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
+                try {
+                    const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/google')
+                    this.$router.replace('/')
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            },
         },
         created: function(){
             this.getUser()

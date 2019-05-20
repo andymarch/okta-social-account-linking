@@ -9,4 +9,8 @@ app.route('/account/:accountid')
 app.route('/account/:accountid/facebook')
     .post(account.link_facebook)
     .delete(account.unlink_facebook)
+
+app.route('/account/:accountid/google')
+    .post(account.link_facebook)
+    .delete(account.unlink_facebook)
 };

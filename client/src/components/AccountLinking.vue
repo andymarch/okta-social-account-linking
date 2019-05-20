@@ -43,7 +43,7 @@
     methods: {
         newSocialAccount: async function(){
             var config = {
-                    idp: process.env.VUE_APP_MATCHING_IDP_ID
+                    idp: process.env.VUE_APP_FACEBOOK_MATCHING_IDP_ID
                 };
             this.$auth.loginRedirect('/',config)
         }
