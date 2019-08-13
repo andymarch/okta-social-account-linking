@@ -35,7 +35,7 @@ export default {
         await this.isAuthenticated()
 
         // Navigate back to home
-        this.$router.push('/')
+        window.location.href = '/'
       }
     }
   }
