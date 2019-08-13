@@ -120,7 +120,7 @@
                     {
                         facebook_email: this.facebook.email
                     })
-                    this.$router.go()
+                    this.$router.replace('/')
                 }
                 catch(error) {
                     console.log(error);
@@ -154,7 +154,7 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
-                    this.$router.go()
+                    this.$router.replace('/')
                 }
                 catch(error) {
                     console.log(error);
@@ -216,7 +216,7 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/google')
-                    this.$router.go()
+                    this.$router.replace('/')
                 }
                 catch(error) {
                     console.log(error);
