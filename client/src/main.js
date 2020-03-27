@@ -18,7 +18,9 @@ Vue.use(Auth, {
   issuer: process.env.VUE_APP_ISSUER,
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: process.env.VUE_APP_REDIRECT,
-  scope: 'openid profile'
+  scopes: 'openid profile',
+  pkce: true,
+  responseType: 'code'
 })
 
 const router = new VueRouter(
@@ -28,7 +30,7 @@ const router = new VueRouter(
     routes: [
       { path: '/', component: Profile, meta: {requiresAuth: true}},
       { path: '/login', component: Login },
-      { path: '/implicit/callback', component: handleAccountLinkingCallback() },
+      { path: '/authorization-code/callback', component: handleAccountLinkingCallback() },
       { path: '/accountLinking', component: AccountLinking }
     ]
   }

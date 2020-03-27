@@ -6,7 +6,6 @@
 <script>
     import OktaSignIn from '@okta/okta-signin-widget'
     import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css'
-    import '@okta/okta-signin-widget/dist/css/okta-theme.css'
     export default {
     name: 'Login',
     mounted: function () {
@@ -33,10 +32,9 @@
                 {type: 'GOOGLE', id: process.env.VUE_APP_GOOGLE_LOGIN_IDP_ID}
             ],
             authParams: {
-            responseType: ['id_token', 'token'],
-            issuer: process.env.VUE_APP_ISSUER,
-            display: 'page',
-            scopes: process.env.VUE_APP_SCOPE.split(' ')
+                pkce: true,
+                issuer: process.env.VUE_APP_ISSUER,
+                scopes: process.env.VUE_APP_SCOPE.split(' ')
             }
         })
         this.widget.renderEl(

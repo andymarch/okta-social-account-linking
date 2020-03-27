@@ -25,7 +25,6 @@
 <script>
     import OktaSignIn from '@okta/okta-signin-widget'
     import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css'
-    import '@okta/okta-signin-widget/dist/css/okta-theme.css'
     export default {
     name: 'dashboard',
     data(){
@@ -68,16 +67,15 @@
                 multiOptionalFactorEnroll: true,  // Allow users to enroll in multiple optional factors before finishing the authentication flow.
             },
             authParams: {
-            responseType: ['id_token', 'token'],
-            issuer: process.env.VUE_APP_ISSUER,
-            display: 'page',
-            scopes: process.env.VUE_APP_SCOPE.split(' ')
+                pkce: true,
+                issuer: process.env.VUE_APP_ISSUER,
+                display: 'page',
+                scopes: process.env.VUE_APP_SCOPE.split(' ')
             }
         })
         this.widget.renderEl(
             { el: '#widget-container' },
             function success(res){
-                console.log("hello");
             /**
              * In this flow, the success handler will not be called because we redirect
              * to the Okta org for the authentication workflow.
