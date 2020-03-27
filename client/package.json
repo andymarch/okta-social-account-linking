@@ -12,8 +12,6 @@
     "@okta/okta-vue": "^1.3.0",
     "axios": "^0.18.1",
     "core-js": "^2.6.11",
-    "eslint-plugin-okta-widget": "file:../../widgetlinter",
-    "okta-widget-linter": "file:../../widgetlinter",
     "vue": "^2.6.11",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.1.6"
