@@ -98,7 +98,7 @@
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.get(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub)
+                    const response = await axios.get(process.env.VUE_APP_ISSUER+'/api/v1/users/me')
                     if(response.data.profile.social_facebook_email){
                         this.user.facebook_email = response.data.profile.social_facebook_email
                     }
@@ -116,9 +116,9 @@
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook',
+                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
-                        facebook_email: this.facebook.email
+                        profile:{social_facebook_email: this.facebook.email}
                     })
                     this.$router.replace('/')
                 }
@@ -131,10 +131,11 @@
                 var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
+                console.log("value: "+this.link_facebook)
                 try {
-                    const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook',
+                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
-                        facebook_email: this.link_facebook
+                        profile:{social_facebook_email: this.link_facebook}
                     })
                     
                     await this.$auth.logout()
@@ -194,11 +195,10 @@
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.post(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/google',
+                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
-                        google_email: this.link_google
+                        profile:{social_google_email: this.link_google}
                     })
-                    
                     await this.$auth.logout()
                     var config = {
                         idp: process.env.VUE_APP_GOOGLE_MATCHING_IDP_ID
@@ -215,7 +215,9 @@
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/google')
+                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',{
+                        profile:{social_google_email: null}
+                    })
                     this.$router.replace('/')
                 }
                 catch(error) {

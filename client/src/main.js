@@ -18,7 +18,7 @@ Vue.use(Auth, {
   issuer: process.env.VUE_APP_ISSUER,
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: process.env.VUE_APP_REDIRECT,
-  scopes: 'openid profile',
+  scopes: ['openid','profile'],
   pkce: true,
   responseType: 'code'
 })
