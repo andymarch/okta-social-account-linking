@@ -118,15 +118,14 @@
             },
 
             linkFacebookVerified: async function(){
-                var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
+                    await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
                         profile:{social_facebook_email: this.facebook.email}
                     })
-                    this.$router.go()
+                    this.getUser()
                 }
                 catch(error) {
                     console.log(error);
@@ -134,12 +133,10 @@
             },
 
             linkFacebookWithRedirect: async function(){
-                var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
-                console.log("value: "+this.link_facebook)
                 try {
-                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
+                    await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
                         profile:{social_facebook_email: this.link_facebook}
                     })
@@ -160,7 +157,7 @@
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
+                    await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
                     this.getUser()
                 }
                 catch(error) {
@@ -176,7 +173,6 @@
               version          : 'v3.3'
             });
             this.facebook.sdk_loaded = true
-            var url = '/me?fields=name,email';
             FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {
                     this.facebook.loggedin = 'yes'
@@ -197,11 +193,10 @@
             },
 
             linkGoogleWithRedirect: async function(){
-                var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
+                    await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',
                     {
                         profile:{social_google_email: this.link_google}
                     })
@@ -217,11 +212,10 @@
             },
 
             unlinkGoogle: async function(){
-                var user = await this.$auth.getUser();
                 var tokenValue = await this.$auth.getAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
-                    const response = await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',{
+                    await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',{
                         profile:{social_google_email: null}
                     })
                     this.getUser()

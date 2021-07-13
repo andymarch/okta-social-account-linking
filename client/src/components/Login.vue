@@ -39,7 +39,7 @@
         })
         this.widget.renderEl(
             { el: '#widget-container' },
-            function success(res){
+            function success(){
             /**
              * In this flow, the success handler will not be called because we redirect
              * to the Okta org for the authentication workflow.
