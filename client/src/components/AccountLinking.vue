@@ -5,16 +5,8 @@
             This user has attempted to login with a federated account which was not
         matched to an existing account.
         </p>
-        <p>Would you like to register a new account using this social provider or login to link with an existing account? </p>
     </div>
 
-    <div class="section">
-        <h3>New Account</h3>
-        <p>This will redirect the user with a JIT enabled IDP connection, creating a new account.</p>
-        <form @submit.prevent="newSocialAccount">
-                <button type="submit">Create Account</button>
-        </form>
-    </div>
     <div class="section">
         <h3>Existing Account</h3>
         <p>This will allow a user to login with existing credentials and then link their federated account.</p>
@@ -37,14 +29,6 @@
             },
             link_facebook: ''
             
-        }
-    },
-    methods: {
-        newSocialAccount: async function(){
-            var config = {
-                    idp: process.env.VUE_APP_FACEBOOK_MATCHING_IDP_ID
-                };
-            this.$auth.loginRedirect('/',config)
         }
     },
     mounted: function () {

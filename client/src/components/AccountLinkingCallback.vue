@@ -8,7 +8,7 @@ export default {
         path: this.$auth.getFromUri()
         })
     } catch (err){
-        if(err.errorSummary =="User creation was disabled."){
+        if(err.errorSummary =="User linking was disabled."){
             this.$router.replace({path: '/accountLinking'})
         } else{
             throw err
