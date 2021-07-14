@@ -12,8 +12,9 @@ interact with Okta. To configure this server you will need to create the
 following .env file in the account-service directory.
 
 ```
-ISSUER=https://<your-tenant>.okta.com/oauth2/default
+ISSUER=https://<your-tenant>.okta.com
 CLIENT_ID=<your-client-id>
+CLIENT_SECRET
 ORG_URL=https://<your-tenant>.okta.com
 API_KEY=<okta-API-token>
 FRONTEND_ADDRESS=http://localhost:8080
@@ -26,8 +27,7 @@ This can then be run with the following two commands
 
 ```npm run start```
 
-This service adds and removes values from a user's Okta profile to be used
-during account linking
+This service manages the IDP object relationships which are not possible to access with the user token
 
 ## Client
 

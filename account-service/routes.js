@@ -3,14 +3,10 @@
 module.exports = function(app){
     var account = require('./accountsController');
 
-app.route('/account/:accountid')
-    .get(account.get_account_details)
+app.route('/account/:accountid/idps')
+    .get(account.get_idps)
 
-app.route('/account/:accountid/facebook')
-    .post(account.link_facebook)
-    .delete(account.unlink_facebook)
-
-app.route('/account/:accountid/google')
-    .post(account.link_google)
-    .delete(account.unlink_google)
+app.route('/account/:accountid/:idpid')
+    .delete(account.unlink_idp)
 };
+

@@ -1,9 +1,4 @@
-const OktaJwtVerifier = require('@okta/jwt-verifier')
-
-const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: process.env.ISSUER,
-  clientId: process.env.CLIENT_ID
-})
+const axios = require('axios');
 
 module.exports = async (req, res, next) => {
   try {
@@ -13,12 +8,17 @@ module.exports = async (req, res, next) => {
     const [authType, token] = authorization.trim().split(' ')
     if (authType !== 'Bearer') throw new Error('Expected a Bearer token')
 
-    const { claims } = await oktaJwtVerifier.verifyAccessToken(token)
-    if (!claims.scp.includes(process.env.SCOPE)) {
-      throw new Error('Could not verify the proper scope')
+    var introspect = await axios.post(process.env.ISSUER+'/oauth2/v1/introspect',null,
+                    {
+                      auth: {username: process.env.CLIENT_ID, password: process.env.CLIENT_SECRET },
+                      params: {token: token, token_type_hint: 'access_token'}
+                    })
+    if(!introspect.data.active){
+      throw new Error('Token is no longer active.')
     }
     next()
   } catch (error) {
+    console.log(error)
     next(error.message)
   }
 }

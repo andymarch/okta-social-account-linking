@@ -85,8 +85,8 @@
                     authorized: '',
                     name: '',
                     email: ''
-                }
-                
+                },
+                idps: []                
             }
         },
         methods: {
@@ -111,6 +111,9 @@
                     else {
                         this.user.google_email = ''
                     }
+
+                    const idps = await axios.get(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/idps')
+                    this.idps = idps.data
                 }
                 catch(error) {
                     console.log(error);
@@ -218,6 +221,11 @@
                     await axios.post(process.env.VUE_APP_ISSUER+'/api/v1/users/me',{
                         profile:{social_google_email: null}
                     })
+                    for(var idp of this.idps){
+                        if(idp.type == "GOOGLE"){
+                            await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+this.user.sub+'/'+idp.id)
+                        }
+                    }
                     this.getUser()
                 }
                 catch(error) {

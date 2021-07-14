@@ -1,81 +1,47 @@
 'use strict';
 
 const okta = require('@okta/okta-sdk-nodejs');
+const { response } = require('express');
 
 const client = new okta.Client({
   orgUrl: process.env.ORG_URL,
   token: process.env.API_KEY    // Obtained from Developer Dashboard
 });
 
-exports.get_account_details = function(req,res){
-    console.log("get account called for "+req.params.accountid)
-    client.getUser(req.params.accountid)
-    .then(user => {
-        res.json(user)
-    })
-    .catch(error => {
-        console.log(error)
-    })
+exports.get_idps = function(req,res){
+    console.log("get idps called for "+req.params.accountid)
+    const url = `${client.baseUrl}/api/v1/users/${req.params.accountid}/idps`;
+    const request = {
+        method: 'get',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      };
+      client.http.http(url, request)
+      .then(res => res.text())
+      .then(text => {
+        console.log(text);
+        res.send(text)
+      })
+      .catch(err => {
+        console.error(err);
+      });
 }
 
-exports.link_facebook = function(req,res){
-    console.log("link account called for "+req.params.accountid+" to "+req.body.facebook_email)
-    client.getUser(req.params.accountid)
-    .then(user => {
-        user.profile.social_facebook_email = req.body.facebook_email;
-        user.update()
-        .then(user => {
-            console.log("Account updated")
-            res.json(user)
-        })
-    })
-    .catch(error => {
-    console.log(error)
-    res.sendStatus(500)
-    })
-}
-
-exports.unlink_facebook = function(req,res){
-    console.log("unlink account called for "+req.params.accountid)
-    client.getUser(req.params.accountid)
-    .then(user => {
-        user.profile.social_facebook_email = "";
-        user.update()
-        .then(user => res.json(user))
-    })
-    .catch(error => {
-    console.log(error)
-    res.sendStatus(500)
-})
-}
-
-exports.link_google = function(req,res){
-    console.log("link account called for "+req.params.accountid+" to "+req.body.google_email)
-    client.getUser(req.params.accountid)
-    .then(user => {
-        user.profile.social_google_email = req.body.google_email;
-        user.update()
-        .then(user => {
-            console.log("Account updated")
-            res.json(user)
-        })
-    })
-    .catch(error => {
-    console.log(error)
-    res.sendStatus(500)
-    })
-}
-
-exports.unlink_google = function(req,res){
-    console.log("unlink account called for "+req.params.accountid)
-    client.getUser(req.params.accountid)
-    .then(user => {
-        user.profile.social_google_email = "";
-        user.update()
-        .then(user => res.json(user))
-    })
-    .catch(error => {
-    console.log(error)
-    res.sendStatus(500)
-    })
+exports.unlink_idp = function(req,res){
+    console.log("get idps called for "+req.params.accountid+ " with "+req.params.idpid)
+    const url = `${client.baseUrl}/api/v1/idps/${req.params.idpid}/users/${req.params.accountid}`;
+    const request = {
+        method: 'delete',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      };
+      client.http.http(url, request)
+      .then(response => res.sendStatus(response.status))
+      .catch(err => {
+        console.error(err);
+      });
 }
