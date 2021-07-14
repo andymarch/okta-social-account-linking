@@ -35,7 +35,7 @@ const router = new VueRouter(
       { path: '/authorization-code/callback', component: handleAccountLinkingCallback() },
       { path: '/accountLinking', component: AccountLinking },
       { path: '/privacy', component: Privacy },
-      { path: '/delete', component: Deletion, meta: {requiresAuth: true} },
+      { path: '/delete', component: Deletion },
     ]
   }
 )
