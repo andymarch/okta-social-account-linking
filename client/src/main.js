@@ -5,6 +5,8 @@ import VueRouter from 'vue-router'
 
 import Profile from './components/Profile'
 import Login from './components/Login'
+import Privacy from './components/Privacy'
+import Deletion from './components/Deletion'
 import Auth from '@okta/okta-vue'
 import AccountLinkingCallback from './components/AccountLinkingCallback'
 import AccountLinking from './components/AccountLinking'
@@ -31,7 +33,9 @@ const router = new VueRouter(
       { path: '/', component: Profile, meta: {requiresAuth: true}},
       { path: '/login', component: Login },
       { path: '/authorization-code/callback', component: handleAccountLinkingCallback() },
-      { path: '/accountLinking', component: AccountLinking }
+      { path: '/accountLinking', component: AccountLinking },
+      { path: '/privacy', component: Privacy },
+      { path: '/delete', component: Deletion, meta: {requiresAuth: true} },
     ]
   }
 )
