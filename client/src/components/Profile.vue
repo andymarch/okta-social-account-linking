@@ -161,6 +161,11 @@
                 axios.defaults.headers.common['Authorization'] = `Bearer `+tokenValue
                 try {
                     await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+user.sub+'/facebook')
+                    for(var idp of this.idps){
+                        if(idp.type == "FACEBOOK"){
+                            await axios.delete(process.env.VUE_APP_API_BASE_URI+'/account/'+this.user.sub+'/'+idp.id)
+                        }
+                    }
                     this.getUser()
                 }
                 catch(error) {
